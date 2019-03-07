@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<style type="text/css">
+.contenidoOculto{
+	display:none;
+	}
+*{
+	font-family: verdana;}
+form{
+  width: 40%;
+  background-color: #f2f2f2;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-family: verdana;}
+  
+.caja{
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-family: verdana; 
+  }
+  
+.campoTipo{
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-family: verdana;
+}
+
+table td, table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+table tr:nth-child(even){background-color: #f2f2f2;}
+
+table tr:hover {background-color: #ddd;}
+
+table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: rgba(0,0,250,0.7);
+  color: white;
+}
+ 
+</style>
+
+</head>
+
+<body>
+<!-- cotenido visible -->
+	<div id="menu">
+		<a href="#" id="menuInicio"> Inicio</a>	
+		<a href="#" id="menuRegistro"> Registro</a>	
+		<a href="#" id="menuListado"> Listado</a>	
+	</div>
+	
+	<div id="contenedor">
+	
+	</div>
+	
+	<div id="contenidoOculto" class="contenidoOculto">
+		<!-- pantalla de inicio -->
+		<div id="inicio">Bienvenido a la aplicaicon de gestion de mi
+			libreria.</div>
+		<!-- fin inicio -->
+
+		<!-- pantalla registro -->
+		<div id="registrarLibro">
+			<span> Introduce los datos del producto a registrar</span></br>
+			<form novalidate="novalidate" action="ServletRegistroLibro"
+				onsubmit="ProcesaForm();return false;">
+					Autor : <input class="caja" type="text" id="campoAutor" /></br>
+	 	  			Editorial : <input class="caja" type="text" id="campoEditorial"/></br> 
+   					Numero de paginas : <input class="caja" type="number" id="campoPag"/></br> 
+					Titulo : <input class="caja" required="Campo requerido" minlength="3"
+					maxlength="40" type="text" id="campoTitulo" /> </br> Precio : <input
+					class="caja" type="number" min="1" max="100" id="campoPrecio" /> </br> 
+					Tipo : <select
+					id="campoTipo">
+					<option>Revistas</option>
+					<option>Periodico</option>
+					<option>Libro</option>
+					<option>Comic</option>
+					<option>e-book</option>
+					</select> <br></br> <input type="submit" value="Registrar"> <input
+					type="reset" value="Borrar">
+			</form>
+		</div>
+		<!-- fin de registro  -->
+		<div id="ListadoLibros">
+			Listado de libros </br>
+			<div id="contenidoListado"></div>
+		</div>
+
+		<!-- 	 finde contenido oculto -->
+	</div>
+	
+	<script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+	<script type="text/javascript">
+	var htmlInicio = $("#inicio").detach();
+	var htmlRegistro = $("#registrarLibro").detach();
+	var htmlListadoLibros = $("#ListadoLibros").detach();
+	
+	var libros = [];
+	var idSiguiente = 0;
+	
+	prepararListadoInicial();
+	listarLibros();
+	
+	$("#menuRegistro").click(function (){
+		$("#contenedor").empty();
+			htmlRegistro.appendTo("#contenedor");	
+	});
+	$("#menuInicio").click(function (){
+		$("#contenedor").empty();
+			htmlInicio.appendTo("#contenedor");		
+	});
+	$("#menuListado").click(function (){
+		$("#contenedor").empty();
+		htmlListadoLibros.appendTo("#contenedor");	
+		listarLibros();
+	});
+	
+	// clases 
+	function Libro(titulo,precio,tipo,autor,numPag,editorial){
+		this.titulo = titulo;
+		this.precio = precio;
+		this.tipo = tipo;
+		this.autor = autor;
+ 	  	this.editorial = editorial ;
+  		this.numPag = numPag;
+		this.idLibro = idSiguiente;
+		idSiguiente++;
+		this.consola = function(){
+			console.log(this.titulo + " " + this.precio + " " + this.tipo);			
+		};
+		this.obtenerHtml = function(){
+// 			return "<div>" +
+// 				" // titulo:  " + this.titulo +
+// 				"// precio:  " + this.precio +
+// 				"//  tipo:   " + this.tipo +
+// 				"//  autor:   " + this.autor +
+//   				"//  numero de paginas:   " + this.numPag +
+//   				"//  editorial:   " + this.editorial +
+// 				"<button onclick='borrarLibro(" + this.idLibro + "" + ")'>Borrar</button>" +
+// 				"</div>";
+// 		};
+			return "<div>"
+			+ "<table style='width: 100%;' border='1' cellpadding='2'>"
+			+ "<tbody>" + "<tr>" + "<th>" + "titulo" + "</th>"
+			+ "<th>" + "precio" + " </th>" + "<th>" + "tipo"
+			+ "</th>" + "<th>" + "autor" + " </th>" + "<th>"
+			+ "editorial" + " </th>" + "<th>" + "Numero de paginas"
+			+ "</th>" + "<th>" + "Boton" + "</th>" + "</tr>"
+			+ "<td>"
+			+ this.titulo
+			+ "</td>"
+			+ "<td>"
+			+ this.precio
+			+ " </td>"
+			+ "<td>"
+			+ this.tipo
+			+ "</td>"
+			+ "<td>"
+			+ this.autor
+			+ " </td>"
+			+ "<td>"
+			+ this.editorial
+			+ " </td>"
+			+ "<td>"
+			+ this.numPag
+			+ "</td>"
+			+ "<td>"
+			+ "<button onclick='borrarLibro("
+			+ this.idLibro
+			+ ""
+			+ ")'>Borrar</button>"
+			+ "</td>"
+			+ "</tr>" + "</table>"
+		};
+	}
+	
+
+	
+	//funciones 
+	function borrarLibro(idAborrar){
+	var res = confirm("borrar libro de id libro" + idAborrar);
+	alert(res);
+		if(res == true){
+			var indiceArrayAborrar = -1;
+			for(i in libros){
+				if(libros[i].idLibro == idAborrar){
+					indiceArrayAborrar = i;
+				}
+			}
+			libros.splice(indiceArrayAborrar,1);
+			listarLibros();
+		}
+	}
+	
+	
+	function prepararListadoInicial(){
+		libros.push(new Libro("Don quijote de la mancha",29.7,"libro"));
+		libros.push(new Libro("Hola mundo",5.7,"revista"));
+		libros.push(new Libro("caca",1.7,"revista"));
+	}
+	
+	function listarLibros(){
+		$("#contenidoListado").empty();
+		for(i in libros){
+			$("#contenidoListado").append (libros[i].obtenerHtml());
+			libros[i].consola();
+		}
+	}
+	
+
+	
+		function ProcesaForm() {
+			
+			
+			
+// 			recoger datos,formar objetos y agregarlo al array
+			var titulo = $("#campoTitulo").val();
+			var precio = $("#campoPrecio").val();
+			var autor =  $("#campoAutor").val();
+			var tipo = $("#campoTipo option:selected").text();
+  			var editorial =  $("#campoEditorial").val();
+ 			var numPag =  $("#campoPag").val();
+			
+ 			
+//validaciones sobre el titulo
+
+			
+ 			
+			var nuevoLibro = new Libro(titulo,precio,tipo,autor,numPag,editorial);
+			libros.push(nuevoLibro);
+			alert("libro insertado correctamente");
+			$("contenedor").empty();
+			htmlListadoLibros.appendTo("#contenedor");
+			listarLibros();
+		}
+		
+// 		codigo inicial
+	htmlInicio.appendTo("#contenedor");
+
+//1-agregar los siguientes campos a la informacion de un libro: autor - editorial - numero de paginas
+
+//2-agregar 2 opciones mas en el tipo de libros
+
+//3-usar un generador de tablas y un generador de formularios para ofrecer un diseño visual mas complejo y atractivo
+
+//4-incorporar validaciones por java scrip para que todos los campos de entrada tengan alguna informacion,
+//cumplan con el formato y tengan un tamaño minimo y maximo
+
+//5-añadir funcionalidades de registro y borrado de socio, cada socio tendra:
+//+nombre +email +direccion +telefono +dni +idSocio
+
+//6-aplicar de nuevo el punto de validaciones en el apartado anterior
+
+//7-permitir editar tanto libros como socios
+
+</script>
+
+
+
+</body>
+</html>
