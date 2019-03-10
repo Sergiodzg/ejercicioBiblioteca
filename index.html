@@ -5,10 +5,11 @@
 <title>Insert title here</title>
 <style type="text/css">
 .contenidoOculto{
-	display:none;
+	display: none;
 	}
 *{
 	font-family: verdana;}
+
 form{
   width: 40%;
   background-color: #f2f2f2;
@@ -67,8 +68,10 @@ table th {
 <!-- cotenido visible -->
 	<div id="menu">
 		<a href="#" id="menuInicio"> Inicio</a>	
-		<a href="#" id="menuRegistro"> Registro</a>	
-		<a href="#" id="menuListado"> Listado</a>	
+		<a href="#" id="menuRegistro"> Registro de libros</a>	
+		<a href="#" id="menuListado"> Listado de libros</a>
+		<a href="#" id="menuRegistroSocios"> Registro de socios</a>	
+		<a href="#" id="menuListadoSocios"> Listado de socios</a>		
 	</div>
 	
 	<div id="contenedor">
@@ -81,7 +84,7 @@ table th {
 			libreria.</div>
 		<!-- fin inicio -->
 
-		<!-- pantalla registro -->
+		<!-- pantalla registro de libros -->
 		<div id="registrarLibro">
 			<span> Introduce los datos del producto a registrar</span></br>
 			<form novalidate="novalidate" action="ServletRegistroLibro"
@@ -104,11 +107,39 @@ table th {
 			</form>
 		</div>
 		<!-- fin de registro  -->
+		
+	<!--  	pantalla de registro de socio --> 
+	
+	<div id="registrarSocios">
+			<span> Introduce los datos del socio a registrar</span></br>
+			<form novalidate="novalidate" action="ServletRegistroSocio"
+				onsubmit="ProcesaFormS();return false;">
+					Nombre : <input class="caja" type="text" id="campoNombre" /></br>
+	 	  			Email : <input class="caja" type="email" id="campoEmail"/></br> 
+	 	  			Direccion : <input class="caja" type="text" id="campoDireccion"/></br> 
+   					Telefono : <input class="caja" type="tel" id="campoTel"/></br>
+   					DNI : <input class="caja" type="text" id="campoDni"/></br> 
+   					idSocio : <input class="caja" type="number" id="campoId"/> 
+   					<br></br> <input type="submit" value="Registrar"> <input
+					type="reset" value="Borrar">
+			</form>
+	</div>
+	
+	
+	
+	<!-- fin de registro de socio -->
+		
+		
 		<div id="ListadoLibros">
 			Listado de libros </br>
 			<div id="contenidoListado"></div>
 		</div>
 
+
+			<div id="ListadoSocios">
+			Listado de socios </br>
+			<div id="contenidoListadoSocios"></div>
+		</div>
 		<!-- 	 finde contenido oculto -->
 	</div>
 	
@@ -117,16 +148,26 @@ table th {
 	var htmlInicio = $("#inicio").detach();
 	var htmlRegistro = $("#registrarLibro").detach();
 	var htmlListadoLibros = $("#ListadoLibros").detach();
+	var htmlRegistroSocios = $("#registrarSocios").detach();
+	var htmlListadoSocios = $("#ListadoSocios").detach();
 	
 	var libros = [];
+	var socios = [];
 	var idSiguiente = 0;
+	var idSiguienteBis = 0;
 	
 	prepararListadoInicial();
+	prepararListadoInicialSocios();
 	listarLibros();
+	listarSocios();
 	
 	$("#menuRegistro").click(function (){
 		$("#contenedor").empty();
 			htmlRegistro.appendTo("#contenedor");	
+	});
+	$("#menuRegistroSocios").click(function (){
+		$("#contenedor").empty();
+			htmlRegistroSocios.appendTo("#contenedor");	
 	});
 	$("#menuInicio").click(function (){
 		$("#contenedor").empty();
@@ -136,6 +177,11 @@ table th {
 		$("#contenedor").empty();
 		htmlListadoLibros.appendTo("#contenedor");	
 		listarLibros();
+	});
+	$("#menuListadoSocios").click(function (){
+		$("#contenedor").empty();
+		htmlListadoSocios.appendTo("#contenedor");	
+		listarSocios();
 	});
 	
 	// clases 
@@ -152,16 +198,7 @@ table th {
 			console.log(this.titulo + " " + this.precio + " " + this.tipo);			
 		};
 		this.obtenerHtml = function(){
-// 			return "<div>" +
-// 				" // titulo:  " + this.titulo +
-// 				"// precio:  " + this.precio +
-// 				"//  tipo:   " + this.tipo +
-// 				"//  autor:   " + this.autor +
-//   				"//  numero de paginas:   " + this.numPag +
-//   				"//  editorial:   " + this.editorial +
-// 				"<button onclick='borrarLibro(" + this.idLibro + "" + ")'>Borrar</button>" +
-// 				"</div>";
-// 		};
+
 			return "<div>"
 			+ "<table style='width: 100%;' border='1' cellpadding='2'>"
 			+ "<tbody>" + "<tr>" + "<th>" + "titulo" + "</th>"
@@ -197,11 +234,59 @@ table th {
 		};
 	}
 	
+	function Socio(nombre,email,direccion,telefono,dni,idSocio,){
+		this.nombre = nombre;
+		this.email = email;
+		this.direccion = direccion;
+		this.telefono = telefono;
+		this.dni = dni;
+ 	  	this.idSocio = idSocio;
+ 	  	idSiguienteBis++;
+		this.consola = function(){
+			console.log(this.nombre + " " + this.telefono + " " + this.dni);			
+		};
+		this.obtenerHtml = function(){
+
+			return "<div>"
+			+ "<table style='width: 100%;' border='1' cellpadding='2'>"
+			+ "<tbody>" + "<tr>" + "<th>" + "nombre" + "</th>"
+			+ "<th>" + "email" + " </th>" + "<th>" + "telefono"
+			+ "</th>" + "<th>" + "dni" + " </th>" + "<th>"
+			+ "idSocio" + " </th>" + "<th>" + "Boton" + "</th>" + "</tr>"
+			+ "<td>"
+			+ this.nombre
+			+ "</td>"
+			+ "<td>"
+			+ this.email
+			+ " </td>"
+			+ "<td>"
+			+ this.direccion
+			+ " </td>"
+			+ "<td>"
+			+ this.telefono
+			+ "</td>"
+			+ "<td>"
+			+ this.dni
+			+ " </td>"
+			+ "<td>"
+			+ this.idSocio
+			+ " </td>"
+			+ "<td>"
+			+ "<button onclick='borrarSocio("
+			+ this.idSocio
+			+ ""
+			+ ")'>Borrar</button>"
+			+ "</td>"
+			+ "</tr>" + "</table>"
+		};
+	}
+	
 
 	
 	//funciones 
+	
 	function borrarLibro(idAborrar){
-	var res = confirm("borrar libro de id libro" + idAborrar);
+	var res = confirm("borrar libro de id" + idAborrar);
 	alert(res);
 		if(res == true){
 			var indiceArrayAborrar = -1;
@@ -216,11 +301,32 @@ table th {
 	}
 	
 	
+	function borrarSocio(idAborrar){
+		var res = confirm("borrar socio de id" + idAborrar);
+		alert(res);
+			if(res == true){
+				var indiceArrayAborrar = -1;
+				for(i in socios){
+					if(socios[i].idSocio == idAborrar){
+						indiceArrayAborrar = i;
+					}
+				}
+				socios.splice(indiceArrayAborrar,1);
+				listarSocios();
+			}
+		}
+	
 	function prepararListadoInicial(){
-		libros.push(new Libro("Don quijote de la mancha",29.7,"libro"));
-		libros.push(new Libro("Hola mundo",5.7,"revista"));
-		libros.push(new Libro("caca",1.7,"revista"));
+		libros.push(new Libro("Don quijote de la mancha",28,"libro"));
+		libros.push(new Libro("From hell",30,"comic"));
+		libros.push(new Libro("Jara y Sedal",3,"revista"));
 	}
+	
+	function prepararListadoInicialSocios(){
+		socios.push(new Socio("Herminia","herminia94@gmail.com",690735555,"54063052V",1));
+	}
+	
+
 	
 	function listarLibros(){
 		$("#contenidoListado").empty();
@@ -229,6 +335,16 @@ table th {
 			libros[i].consola();
 		}
 	}
+	
+	function listarSocios(){
+		$("#contenidoListadoSocios").empty();
+		for(i in socios){
+			$("#contenidoListadoSocios").append (socios[i].obtenerHtml());
+			socios[i].consola();
+		}
+	}
+	
+	
 	
 
 	
@@ -245,7 +361,6 @@ table th {
  			var numPag =  $("#campoPag").val();
 			
  			
-//validaciones sobre el titulo
 
 			
  			
@@ -257,7 +372,34 @@ table th {
 			listarLibros();
 		}
 		
+		
+		
+		function ProcesaFormS() {
+			
+			
+			
+// 			recoger datos,formar objetos y agregarlo al array
+			var nombre = $("#campoNombre").val();
+			var email = $("#campoEmail").val();
+			var direccion = $("#campoDireccion").val();
+			var telefono =  $("#campoTelefono").val();
+			var dni =  $("#campoDni").val();
+ 			var id =  $("#campoId").val();
+			
+ 			
+
+			
+ 			
+			var nuevoSocio = new Socio(nombre,email,direccion,telefono,dni,id);
+			socios.push(nuevoSocio);
+			alert("socio ingresado correctamente");
+			$("contenedor").empty();
+			htmlListadoSocios.appendTo("#contenedor");
+			listarSocios();
+		}
+		
 // 		codigo inicial
+
 	htmlInicio.appendTo("#contenedor");
 
 //1-agregar los siguientes campos a la informacion de un libro: autor - editorial - numero de paginas
