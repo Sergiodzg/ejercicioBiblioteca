@@ -9,7 +9,6 @@
 	}
 *{
 	font-family: verdana;}
-
 form{
   width: 40%;
   background-color: #f2f2f2;
@@ -42,16 +41,12 @@ form{
   box-sizing: border-box;
   font-family: verdana;
 }
-
 table td, table th {
   border: 1px solid #ddd;
   padding: 8px;
 }
-
 table tr:nth-child(even){background-color: #f2f2f2;}
-
 table tr:hover {background-color: #ddd;}
-
 table th {
   padding-top: 12px;
   padding-bottom: 12px;
@@ -198,14 +193,13 @@ table th {
 			console.log(this.titulo + " " + this.precio + " " + this.tipo);			
 		};
 		this.obtenerHtml = function(){
-
 			return "<div>"
 			+ "<table style='width: 100%;' border='1' cellpadding='2'>"
 			+ "<tbody>" + "<tr>" + "<th>" + "titulo" + "</th>"
 			+ "<th>" + "precio" + " </th>" + "<th>" + "tipo"
 			+ "</th>" + "<th>" + "autor" + " </th>" + "<th>"
 			+ "editorial" + " </th>" + "<th>" + "Numero de paginas"
-			+ "</th>" + "<th>" + "Boton" + "</th>" + "</tr>"
+			+ "</th>" + "<th>" + "    " + "</th>" + "</tr>"
 			+ "<td>"
 			+ this.titulo
 			+ "</td>"
@@ -228,7 +222,7 @@ table th {
 			+ "<button onclick='borrarLibro("
 			+ this.idLibro
 			+ ""
-			+ ")'>Borrar</button>"
+			+ ")'>Borrar libro</button>"
 			+ "</td>"
 			+ "</tr>" + "</table>"
 		};
@@ -246,13 +240,12 @@ table th {
 			console.log(this.nombre + " " + this.telefono + " " + this.dni);			
 		};
 		this.obtenerHtml = function(){
-
 			return "<div>"
 			+ "<table style='width: 100%;' border='1' cellpadding='2'>"
 			+ "<tbody>" + "<tr>" + "<th>" + "nombre" + "</th>"
-			+ "<th>" + "email" + " </th>" + "<th>" + "telefono"
+			+ "<th>" + "email" + " </th>" + "<th>" + "direccion" + "</th>" + "<th>" + "telefono"
 			+ "</th>" + "<th>" + "dni" + " </th>" + "<th>"
-			+ "idSocio" + " </th>" + "<th>" + "Boton" + "</th>" + "</tr>"
+			+ "idSocio" + " </th>" + "<th>" + "    " + "</th>" + "</tr>"
 			+ "<td>"
 			+ this.nombre
 			+ "</td>"
@@ -275,13 +268,12 @@ table th {
 			+ "<button onclick='borrarSocio("
 			+ this.idSocio
 			+ ""
-			+ ")'>Borrar</button>"
+			+ ")'>Borrar socio</button>"
 			+ "</td>"
 			+ "</tr>" + "</table>"
 		};
 	}
 	
-
 	
 	//funciones 
 	
@@ -323,10 +315,9 @@ table th {
 	}
 	
 	function prepararListadoInicialSocios(){
-		socios.push(new Socio("Herminia","herminia94@gmail.com",690735555,"54063052V",1));
+		socios.push(new Socio("Herminia","herminia94@gmail.com","Santa Trinida 22 3ºB",690735555,"54063052V",1));
 	}
 	
-
 	
 	function listarLibros(){
 		$("#contenidoListado").empty();
@@ -346,7 +337,6 @@ table th {
 	
 	
 	
-
 	
 		function ProcesaForm() {
 			
@@ -361,7 +351,6 @@ table th {
  			var numPag =  $("#campoPag").val();
 			
  			
-
 			
  			
 			var nuevoLibro = new Libro(titulo,precio,tipo,autor,numPag,editorial);
@@ -387,7 +376,6 @@ table th {
  			var id =  $("#campoId").val();
 			
  			
-
 			
  			
 			var nuevoSocio = new Socio(nombre,email,direccion,telefono,dni,id);
@@ -399,25 +387,16 @@ table th {
 		}
 		
 // 		codigo inicial
-
 	htmlInicio.appendTo("#contenedor");
-
 //1-agregar los siguientes campos a la informacion de un libro: autor - editorial - numero de paginas
-
 //2-agregar 2 opciones mas en el tipo de libros
-
 //3-usar un generador de tablas y un generador de formularios para ofrecer un diseño visual mas complejo y atractivo
-
 //4-incorporar validaciones por java scrip para que todos los campos de entrada tengan alguna informacion,
 //cumplan con el formato y tengan un tamaño minimo y maximo
-
 //5-añadir funcionalidades de registro y borrado de socio, cada socio tendra:
 //+nombre +email +direccion +telefono +dni +idSocio
-
 //6-aplicar de nuevo el punto de validaciones en el apartado anterior
-
 //7-permitir editar tanto libros como socios
-
 </script>
 
 
